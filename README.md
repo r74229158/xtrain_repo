@@ -11,11 +11,12 @@ $$ df_i(x) = f_{W_{i} = W'_{i}}(x) - f(x)$$
 $$ df'_i(x) = f'(x) - f'_{W'_{i} = W_{i}}(x)$$
 
 and 
+
 $$d\mathcal{R}^t(x) = \mathcal{I}^T \cdot (df(x) + df'(x))$$
 
 The final score is calculated as 
+
 $$ \mathcal{R}^{t+1}(x) = \mathcal{R}^t(x) + d\mathcal{R}^t(x)$$,
-and
 $$ \mathcal{R}^0(x) = 0. $$
 
 <br>
