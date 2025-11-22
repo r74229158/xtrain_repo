@@ -16,7 +16,7 @@ $$d\mathcal{R}^t(x) = \mathcal{I}^T \cdot (df(x) + df'(x))$$
 
 The final score is calculated as 
 
-$$ \mathcal{R}^{t+1}(x) = \mathcal{R}^t(x) + d\mathcal{R}^t(x)$$,
+$$ \mathcal{R}^{t+1}(x) = \mathcal{R}^t(x) + d\mathcal{R}^t(x),$$
 $$ \mathcal{R}^0(x) = 0. $$
 
 <br>
