@@ -103,9 +103,10 @@ def run(config, test_data,
             compare_attributions(trainer.run_num)
             return
         
-        print("--------------------------------------------------")
+        print("-------------------------------------------------")
         print("Calculating the Deletion AUC criterion for XtrAIn and other baseline methods")
-        print("--------------------------------------------------")
+        print("-------------------------------------------------")
+
 
         pth = f"run_{trainer.run_num}"
         test_methods(model_pth.rsplit("/")[-1], 
