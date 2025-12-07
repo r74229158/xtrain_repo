@@ -1,4 +1,4 @@
-## XtrAIn: Capturing Causal Effects during Training updates to calculate Feature Importance in Deep Neural Networks ꧁⎝ 𓆩༺✧༻𓆪 ⎠꧂
+<!-- ## XtrAIn: Capturing Causal Effects during Training updates to calculate Feature Importance in Deep Neural Networks ꧁⎝ 𓆩༺✧༻𓆪 ⎠꧂ -->
 
 <!-- Welcome to the official repository for XtrAIn, an attribution method presented in CVPR 2026. What follows is a brief summary of XtrAIn's theory, along with a guide for running the code. -->
 
