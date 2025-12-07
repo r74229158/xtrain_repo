@@ -8,7 +8,7 @@ Training/Data/Datasets/PAM50/*
 !Training/Data/Datasets/PAM50/.gitkeep
 Training/Data/Datasets/TMNIST/*
 !Training/Data/Datasets/TMNIST/.gitkeep
-Theoretical_aspects/*
+Theory/
 
 Training/Trainer/Checkpoints/
 Testing/
