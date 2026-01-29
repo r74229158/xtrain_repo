@@ -11,18 +11,18 @@ from Training.Data.Modules.transformations import AddCustomTransformations
 
 
 class CustomLoader:
-    """A loader for loading data from different sources. A predefined set of transformations
-    is performed on each dataset. Then data are broken into train and test set if on train mode.
-    Data are then loaded to dataloaders.
+    """A loader for data loading from different sources. A predefined set of transformations
+    is performed on each dataset. 
     
     Args
-        dataset_name (str): name of the dataset, selected from some predefined datasets
-        train (bool): If True, data are split into train and test
-        batch_size (int): size of the batch, 
-        num_workers=4, 
-        test_size=0.2, 
-        seed=None, 
-        shuffle_test
+        dataset_name (str): name of the dataset, selected from some predefined datasets in 
+            the configuration file
+        train (bool): If True, data are split into train and test.
+        batch_size (int): size of the batch.
+        num_workers (int): Number of workers.
+        test_size (float): A number in [0, 1] controlling the train and test size.
+        seed (int): A random seed. If None, selection is random. 
+        shuffle_test (bool): If True, the test set is shuffled.
     """
 
     def __init__(self, dataset_name, train=True, 
@@ -49,7 +49,7 @@ class CustomLoader:
                 transforms.ToPILImage(), 
                 transforms.ToTensor(),                 
                 transforms.Lambda(lambda x: x * 0.2 + 0.6), # Normalize to [0.6, 0.8]
-                AddCustomTransformations(add_grid=True, add_lines=False)
+                AddCustomTransformations(add_grid=False, add_lines=True)
             ]))
 
         elif self.dataset_name=="corrupted_mnist":

@@ -4,12 +4,11 @@ from copy import deepcopy
 
 from Training.Trainer.BaseTrainer import BaseTrainer
 from Training.Utils.train_utils import accuracy
-from XAI_Method.causal_effect_effic import Causal
+from XAI_Method.causal_effect import Causal
 
 class simpleDNNTrainer(BaseTrainer):
     """
-    Implements the training step of the algorithm. 
-    Check the BaseTrainer for more information.
+    Implements the training step of the algorithm and calculation of attribution scores for it. 
     """
 
     def __init__(self, model, config, data, 
@@ -17,14 +16,18 @@ class simpleDNNTrainer(BaseTrainer):
                  break_per_epochs=5,
                  run_simple_acc=False,
                  save_r_scores='last',
-                 save_pdf=False
+                 save_pdf=False,
+                 save_results=True,
+                 num_to_save=20
                  ):
 
         super().__init__(model, config, data, n_test, 
                          break_per_epochs=break_per_epochs,
                          run_simple_acc=run_simple_acc,
                          save_r_scores=save_r_scores,
-                         save_pdf=save_pdf
+                         save_pdf=save_pdf,
+                         save_results=save_results,
+                         num_to_save=num_to_save
                         )
         self.dev = "cuda" if torch.cuda.is_available() else "cpu"
         self.loss = nn.CrossEntropyLoss()
@@ -55,7 +58,7 @@ class simpleDNNTrainer(BaseTrainer):
         """
         The main step of DNNTrainer. Depending on the loss, the method
         calls the suitable loss function. The model is then trained and
-        the XtrAIn calculation is being applied. This computation reverses
+        the Xtrain calculation is being applied. This computation reverses
         the state of the model back to its original state.
 
         Args:
@@ -99,14 +102,14 @@ class simpleDNNTrainer(BaseTrainer):
             self.upd_model_state = {k: v.detach().clone() for k, v in self.model.state_dict().items()}
         
         # Track positive contributions of target updates
-        if loss == 'target':
+        elif loss == 'target':
             with torch.no_grad():
 
                 new_output = self.forward(self.X, apply_softmax=True)\
                     [torch.arange(self.labels.shape[0]), self.labels]
                 catch_pos = (new_output>old_output).unsqueeze(1).detach().cpu()
 
-        R = self.calculate_R()          
+        R = self.calculate_R(loss)          
         if loss == 'target':
             return l, (R, catch_pos)
 
@@ -126,9 +129,10 @@ class simpleDNNTrainer(BaseTrainer):
 
         return loss
 
-    def calculate_R(self):
-        """This method calls the mechanism for calculating XtrAIn"""
+    def calculate_R(self, loss):
+        """This method calls the mechanism for calculating Xtrain"""
         
-        causal = Causal(self.model, self.model_state, self.X, self.labels)
+        effect = 'pos' if loss=='target' else 'norm' if loss=='normal' else 'neg'
+        causal = Causal(self.model, self.model_state, self.X, self.labels, effect)
         return causal.update()
 

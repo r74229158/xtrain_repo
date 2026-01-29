@@ -1,7 +1,7 @@
 import torch
 
 from Training.Model.FCNN import simpleDNN4l
-from XAI_Method.causal_effect_effic import Causal
+from XAI_Method.causal_effect import Causal
 
 
 class RandomSamples:
@@ -30,6 +30,7 @@ class RandomSamples:
         """
 
         self.const_model = simpleDNN4l(model.layers, False)
+        self.const_model_state = {k: v.detach().clone() for k, v in self.const_model.state_dict().items()}
         self.model = model
         self.dev = model.device.type
 
@@ -82,13 +83,13 @@ class RandomSamples:
         
         model_state = {k: v.detach().clone() for k, v in self.const_model.state_dict().items()} 
         rand_state = {k: v.detach().clone() for k, v in self.model.state_dict().items()}
-        upd_attrib = Causal(self.model, model_state, self.X, self.lbls, False) 
-        upd = upd_attrib.update()   
 
+        upd_attrib = Causal(self.model, model_state, self.X, self.lbls, 'neut').update()  
+        
         if self.save_r_scores=='all':
-            self.R[:, :, 0] = upd
+            self.R[:, :, 0] = upd_attrib
         else:
-            self.R[:, :] = upd
+            self.R[:, :] = upd_attrib
         
         self.model.load_state_dict(rand_state)
         return self.R
