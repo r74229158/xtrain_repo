@@ -42,7 +42,7 @@ class TMNISTDataset(Dataset):
     
     def _get_mnist_data(self):
 
-        target_path = os.getcwd() + "/Training/Data/Datasets/TMNIST/TMNIST_Data.csv"
+        target_path = os.getcwd() + "/Training/Data/Datasets/TMNIST"
         data_path = Path(target_path)
 
         if data_path.exists()==False:
@@ -50,4 +50,4 @@ class TMNISTDataset(Dataset):
             download_path = kagglehub.dataset_download("nimishmagre/tmnist-typeface-mnist")
             shutil.copytree(download_path, target_path)
         
-        self.data = pd.read_csv(target_path)
+        self.data = pd.read_csv(target_path + "/TMNIST_Data.csv")
